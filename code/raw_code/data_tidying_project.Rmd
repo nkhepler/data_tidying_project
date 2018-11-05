@@ -3,9 +3,11 @@ title: "Data Tidying Project"
 author: "Nate Hepler"
 date: "11/01/2018"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
-
+### Loading packages for use in data wrangling
 ```{r setup, include=FALSE}
 ## install packages if necessary
 list.of.packages <- c("httr", "readxl", "dplyr", "tidyr", "stringr", "reshape2", "skimr", "ggplot2")
@@ -45,7 +47,7 @@ colnames(df2) <- df2[1,]
 ```
 
 ### Save Raw Data
-
+This allows us to access data even if removed from Web.
 ```{r save-data, warning=FALSE} 
 ## use saveRDS() to save each object as a .rds file
 saveRDS(df1, file='df_department.rds')
@@ -54,7 +56,9 @@ saveRDS(df2, file='df_retail.rds')
 ```
 
 ### Wrangle Data
+**Data Set 1**
 
+This data set is in the wide format with a lot of extra, useless data
 ```{r wrangle-df2, warning=FALSE} 
 ## an example working with df2
 ## let's wrangle!
@@ -75,6 +79,9 @@ df_retail <- df2 %>%
   filter(business == "Retail sales, total "| business=="Department stores ")
 ```
 
+**Data Set 2**
+
+This data set is in long format.
 ```{r wrangle-df1, warning=FALSE} 
 ## now, your turn!
 ## work with df1
@@ -98,11 +105,13 @@ df_department <- df1 %>%
   select(., c(business, year, n))
 ```
 
+**Merging two data sets into one**
 ```{r merge-data, warning=FALSE} 
 ## Now, combine the two data frames
-df_total <- function_name()
+df_total <- df_retail %>% full_join(df_department)
 ```
 
+### Plotting data
 ```{r plot, warning=FALSE, fig.width=10} 
 ## Plot Retail Sales data
 ggplot(df_retail, aes(x=year,y=n,colour=business)) +
